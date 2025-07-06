@@ -1,0 +1,200 @@
+// src/App.scss
+
+// =================================================================
+// 1. VARIABLES Y CONFIGURACIÓN GLOBAL
+// =================================================================
+// Aquí defines todos tus colores, fuentes, etc., para reutilizarlos.
+// Es como el panel de control de tu diseño.
+$primary-color: #f4063e;      // Un morado distintivo para tu marca
+$secondary-color: #6c757d;    // Gris estándar para texto secundario
+$background-color: #f8f9fa;   // Un gris muy claro para el fondo general
+$header-bg: #215255;          // Un fondo oscuro y elegante para el header
+$font-family-base: 'Helvetica Neue', sans-serif;
+
+// =================================================================
+// 2. ESTILOS GLOBALES (BODY, ENLACES, ETC.)
+// =================================================================
+body {
+  font-family: $font-family-base;
+  background-color: $background-color;
+  color: #212529;
+}
+
+.main-content {
+  // Ayuda a que el footer se mantenga abajo en páginas con poco contenido.
+  flex-grow: 1;
+}
+
+// =================================================================
+// 3. ESTILOS PARA COMPONENTES ESPECÍFICOS
+// =================================================================
+
+// --- Header ---
+.header-navbar {
+  // Estilo personalizado para la barra de navegación que reemplaza a .bg-dark
+  background-color: $header-bg;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-brand {
+  // Estilo para el logo "CreaMuebles"
+  font-weight: bold;
+  font-size: 1.5rem;
+  transition: transform 0.2s ease-in-out;
+  letra-spacing: 0.1em; // Espaciado entre letras para un toque moderno
+  tipo: uppercase; // Mayúsculas para un estilo más audaz
+
+  // Efecto de hover para el logo
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// --- Product Card ---
+.product-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-img-top {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+}
+
+// --- Footer ---
+.app-footer {
+  // Recreamos el estilo que nos daba Bootstrap, pero ahora con nuestro código
+  background-color: $header-bg; // Usamos la misma variable del header para consistencia
+  color: rgba(255, 255, 255, 0.85); // Un blanco no tan intenso, más agradable a la vista
+  padding: 1.5rem 0; // Un poco más de espacio vertical
+  margin-top: auto; // Esto empuja el footer al final de la página en vistas con poco contenido
+  text-align: center;
+  border-top: 3px solid $primary-color; // ¡Un toque personalizado! Un borde superior con nuestro color primario.
+}
+
+// ==========================================================================
+// ESTILOS PARA LA PÁGINA DE PRODUCTOS (ProductsPage.jsx)
+// ==========================================================================
+
+// Contenedor principal de la página
+.products-container {
+  max-width: 1200px;
+  margin: 2rem auto; // Centra el contenedor y le da espacio vertical
+  padding: 0 1.5rem; // Espacio lateral para que no se pegue a los bordes en móviles
+
+  h1 {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 2.5rem;
+    font-weight: 300; // Un estilo de fuente más ligero y moderno
+    color: #333;
+  }
+}
+
+// La cuadrícula que organiza las tarjetas de producto
+.products-grid {
+  display: grid;
+  // Crea columnas que se ajustan automáticamente. Cada una tendrá un mínimo de 280px.
+  // Esto hace que el diseño sea responsivo sin necesidad de media queries.
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem; // Espacio entre las tarjetas
+}
+
+// Estilos para cada tarjeta de producto
+.product-card {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden; // Para que la imagen respete los bordes redondeados
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column; // Organiza los elementos en una columna
+
+  &:hover {
+    transform: translateY(-5px); // Ligero efecto de elevación al pasar el mouse
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover; // Asegura que la imagen cubra el espacio sin deformarse
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    color: #333;
+    padding: 1rem 1rem 0.5rem 1rem; // Espaciado interno
+    margin: 0;
+  }
+
+  p {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2a7a7b; // Un color de acento (puedes cambiarlo por tus variables)
+    padding: 0 1rem 1.5rem 1rem;
+    margin: 0;
+    margin-top: auto; // Empuja el precio hacia abajo si los títulos tienen alturas diferentes
+  }
+  // En App.scss, dentro de la regla .product-card
+
+.product-card {
+  // ... (tus estilos existentes para .product-card)
+
+  // Nuevo contenedor para el contenido de texto
+  .card-content {
+    padding: 1rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; // Permite que el contenido crezca y empuje el botón hacia abajo
+  }
+
+  // Estilo para la categoría
+  .card-category {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #888;
+    text-transform: uppercase;
+    margin: 0 0 0.5rem 0;
+  }
+
+  // Ajustamos los títulos y precios para que usen las nuevas clases
+  .card-title {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0;
+  }
+
+  .card-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2a7a7b;
+    margin: 0.5rem 0 1rem 0;
+    flex-grow: 1; // Ocupa el espacio sobrante, empujando el botón al final
+  }
+
+  // Estilo para el nuevo botón de detalles
+  .details-btn {
+    display: inline-block;
+    text-align: center;
+    padding: 0.6rem;
+    background-color: #fff;
+    color: #2a7a7b;
+    border: 1px solid #2a7a7b;
+    border-radius: 5px;
+    text-decoration: none; // Quitar subrayado del Link
+    transition: background-color 0.2s, color 0.2s;
+
+    &:hover {
+      background-color: #2a7a7b;
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+}
+}
