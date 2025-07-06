@@ -3,15 +3,28 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { getAllCategories } from '../../services/categoryService';
 import { FaShoppingCart } from 'react-icons/fa';
+// 1. IMPORTAMOS EL HOOK PARA USAR EL CONTEXTO DEL CARRITO
+import { useCart } from '../../context/CartContext';
 
 const Header = () => {
     const [categories, setCategories] = useState([]);
-    const cartItemCount = 0;
+    
+    // 2. OBTENEMOS LOS ITEMS DEL CARRITO DESDE EL CONTEXTO GLOBAL
+    const { cartItems } = useCart();
 
+    // 3. CALCULAMOS EL NÚMERO TOTAL DE PRODUCTOS EN EL CARRITO
+    //    Sumamos las cantidades de cada item para tener el total real.
+    const totalItemsInCart = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+    // Tu lógica para cargar categorías se mantiene intacta
     useEffect(() => {
         const fetchCategories = async () => {
-            const data = await getAllCategories();
-            setCategories(data);
+            try {
+                const data = await getAllCategories();
+                setCategories(data);
+            } catch (error) {
+                console.error("Error al cargar las categorías:", error);
+            }
         };
 
         fetchCategories();
@@ -19,7 +32,6 @@ const Header = () => {
 
     return (
         <header>
-            {/* Fíjate cómo combinamos clases de Bootstrap con las nuestras */}
             <nav className="navbar navbar-expand-lg navbar-dark header-navbar">
                 <div className="container">
                     <Link className="navbar-brand header-brand" to="/">CreaMuebles</Link>
@@ -29,6 +41,7 @@ const Header = () => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
                             <li className="nav-item dropdown">
+                                {/* ... tu código del dropdown de categorías no cambia ... */}
                                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Categorías
                                 </a>
@@ -45,9 +58,10 @@ const Header = () => {
                             <li className="nav-item">
                                 <NavLink className="nav-link position-relative" to="/cart" aria-label="Ver carrito de compras">
                                     <FaShoppingCart size="1.3em" />
-                                    {cartItemCount > 0 && (
+                                    {/* 4. USAMOS LA NUEVA VARIABLE DINÁMICA */}
+                                    {totalItemsInCart > 0 && (
                                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                            {cartItemCount}
+                                            {totalItemsInCart}
                                             <span className="visually-hidden">productos en el carrito</span>
                                         </span>
                                     )}

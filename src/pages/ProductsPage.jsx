@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllProducts } from '../services/productService'; // Asegúrate de que la ruta sea correcta
+import '../App.scss';
+import { formatColombianPrice } from '../utils/formatters';
 
 const ProductsPage = () => {
     // 1. Inicializar siempre como un array vacío
@@ -53,12 +55,10 @@ const ProductsPage = () => {
                             
                             {/* Añadimos un div para agrupar el contenido de texto */}
                             <div className="card-content">
-                                {/* 2. Mostramos el nombre de la categoría */}
-                                {/* Usamos optional chaining (?.) por si un producto no tuviera categoría asignada */}
-                                <p className="card-category">{product.category?.name || 'Sin categoría'}</p>
                                 
                                 <h2 className="card-title">{product.name}</h2>
-                                <p className="card-price">${product.price}</p>
+                                 <p className="card-price">{formatColombianPrice(product.price)}</p>
+                                <p className="card-description">{product.description}</p>
 
                                 {/* 3. Añadimos el Link para ver los detalles */}
                                 <Link to={`/product/${product.id}`} className="details-btn">

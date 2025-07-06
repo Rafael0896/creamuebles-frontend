@@ -2,33 +2,32 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
-// 1. Eliminamos la importación de HomePage que ya no se usará
-// import HomePage from '../pages/HomePage'; 
 import ProductsPage from '../pages/ProductsPage';
 import LoginPage from '../pages/LoginPage';
 import ProductDetailPage from '../pages/ProductDetailPage';
 
+// 1. Reemplazamos el placeholder con la importación real del componente
+import CartPage from '../pages/CartPage';
+
 const AppRoutes = () => {
     return (
         <Routes>
-            {/* Todas las rutas dentro de esta Route usarán el componente Layout */}
+            {/* Todas las rutas anidadas aquí compartirán el Layout (Header y Footer) */}
             <Route path="/" element={<Layout />}>
                 
-                {/* 2. CAMBIO CLAVE: La ruta principal (index) ahora muestra la página de productos */}
+                {/* Ruta principal (landing page) */}
                 <Route index element={<ProductsPage />} />
 
-                {/* 3. Esta ruta es ahora redundante, la eliminamos para mayor claridad */}
-                {/* <Route path="products" element={<ProductsPage />} /> */}
-
-                {/* La ruta para el login se mantiene igual */}
+                {/* Ruta para el login */}
                 <Route path="login" element={<LoginPage />} />
 
-                {/* Aquí puedes añadir más rutas como /register, /cart, etc. */}
+                {/* 2. Dejamos una única y limpia ruta para el carrito */}
+                <Route path="cart" element={<CartPage />} />
 
-                {/* El ":productId" es un parámetro que cambiará según el producto */}
+                {/* Ruta dinámica para los detalles de un producto específico */}
                 <Route path="product/:productId" element={<ProductDetailPage />} />
 
-                {/* Una ruta "catch-all" para páginas no encontradas */}
+                {/* Ruta "catch-all" para cualquier URL no encontrada */}
                 <Route path="*" element={<div className="text-center py-5"><h2>404 - Página no encontrada</h2></div>} />
             </Route>
         </Routes>

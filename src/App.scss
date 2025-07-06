@@ -3,16 +3,17 @@
 // =================================================================
 // 1. VARIABLES Y CONFIGURACIÓN GLOBAL
 // =================================================================
-// Aquí defines todos tus colores, fuentes, etc., para reutilizarlos.
-// Es como el panel de control de tu diseño.
-$primary-color: #f4063e;      // Un morado distintivo para tu marca
-$secondary-color: #6c757d;    // Gris estándar para texto secundario
-$background-color: #f8f9fa;   // Un gris muy claro para el fondo general
-$header-bg: #215255;          // Un fondo oscuro y elegante para el header
+$primary-color: #8abffc;      // Morado distintivo para la marca
+$secondary-color: #6c757d;    // Gris para texto secundario
+$background-color: #f8f9fa;   // Fondo general claro
+$header-bg: #215255;          // Fondo oscuro para el header
 $font-family-base: 'Helvetica Neue', sans-serif;
+$text-color-dark: #333;
+$text-color-light: #fff;
+$border-color: #eee;
 
 // =================================================================
-// 2. ESTILOS GLOBALES (BODY, ENLACES, ETC.)
+// 2. ESTILOS GLOBALES (BODY, HEADER, FOOTER, ETC.)
 // =================================================================
 body {
   font-family: $font-family-base;
@@ -21,180 +22,251 @@ body {
 }
 
 .main-content {
-  // Ayuda a que el footer se mantenga abajo en páginas con poco contenido.
   flex-grow: 1;
 }
 
-// =================================================================
-// 3. ESTILOS PARA COMPONENTES ESPECÍFICOS
-// =================================================================
-
-// --- Header ---
 .header-navbar {
-  // Estilo personalizado para la barra de navegación que reemplaza a .bg-dark
   background-color: $header-bg;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .header-brand {
-  // Estilo para el logo "CreaMuebles"
   font-weight: bold;
   font-size: 1.5rem;
   transition: transform 0.2s ease-in-out;
-  letra-spacing: 0.1em; // Espaciado entre letras para un toque moderno
-  tipo: uppercase; // Mayúsculas para un estilo más audaz
-
-  // Efecto de hover para el logo
   &:hover {
     transform: scale(1.05);
   }
 }
 
-// --- Product Card ---
-.product-card {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  .card-img-top {
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-  }
-}
-
-// --- Footer ---
 .app-footer {
-  // Recreamos el estilo que nos daba Bootstrap, pero ahora con nuestro código
-  background-color: $header-bg; // Usamos la misma variable del header para consistencia
-  color: rgba(255, 255, 255, 0.85); // Un blanco no tan intenso, más agradable a la vista
-  padding: 1.5rem 0; // Un poco más de espacio vertical
-  margin-top: auto; // Esto empuja el footer al final de la página en vistas con poco contenido
+  background-color: $header-bg;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 1.5rem 0;
+  margin-top: auto;
   text-align: center;
-  border-top: 3px solid $primary-color; // ¡Un toque personalizado! Un borde superior con nuestro color primario.
+  border-top: 3px solid $primary-color;
 }
 
 // ==========================================================================
-// ESTILOS PARA LA PÁGINA DE PRODUCTOS (ProductsPage.jsx)
+// 3. ESTILOS PARA LA PÁGINA DE PRODUCTOS (ProductsPage.jsx)
 // ==========================================================================
-
-// Contenedor principal de la página
 .products-container {
   max-width: 1200px;
-  margin: 2rem auto; // Centra el contenedor y le da espacio vertical
-  padding: 0 1.5rem; // Espacio lateral para que no se pegue a los bordes en móviles
+  margin: 2rem auto;
+  padding: 0 1.5rem;
 
   h1 {
     text-align: center;
     margin-bottom: 2.5rem;
     font-size: 2.5rem;
-    font-weight: 300; // Un estilo de fuente más ligero y moderno
-    color: #333;
+    font-weight: 300;
+    color: $text-color-dark;
   }
 }
 
-// La cuadrícula que organiza las tarjetas de producto
 .products-grid {
   display: grid;
-  // Crea columnas que se ajustan automáticamente. Cada una tendrá un mínimo de 280px.
-  // Esto hace que el diseño sea responsivo sin necesidad de media queries.
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem; // Espacio entre las tarjetas
+  gap: 2rem;
 }
 
-// Estilos para cada tarjeta de producto
+// --- Product Card (Versión Unificada y Corregida) ---
 .product-card {
-  background-color: #fff;
-  border: 1px solid #eee;
+  background-color: $text-color-light;
+  border: 1px solid $border-color;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  overflow: hidden; // Para que la imagen respete los bordes redondeados
+  overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
-  flex-direction: column; // Organiza los elementos en una columna
+  flex-direction: column;
 
   &:hover {
-    transform: translateY(-5px); // Ligero efecto de elevación al pasar el mouse
+    transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
 
-  img {
+  img, .card-img-top {
     width: 100%;
     height: 220px;
-    object-fit: cover; // Asegura que la imagen cubra el espacio sin deformarse
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
   }
 
-  h2 {
-    font-size: 1.2rem;
-    color: #333;
-    padding: 1rem 1rem 0.5rem 1rem; // Espaciado interno
-    margin: 0;
-  }
-
-  p {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #2a7a7b; // Un color de acento (puedes cambiarlo por tus variables)
-    padding: 0 1rem 1.5rem 1rem;
-    margin: 0;
-    margin-top: auto; // Empuja el precio hacia abajo si los títulos tienen alturas diferentes
-  }
-  // En App.scss, dentro de la regla .product-card
-
-.product-card {
-  // ... (tus estilos existentes para .product-card)
-
-  // Nuevo contenedor para el contenido de texto
   .card-content {
     padding: 1rem 1.5rem 1.5rem;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; // Permite que el contenido crezca y empuje el botón hacia abajo
+    flex-grow: 1;
   }
 
-  // Estilo para la categoría
-  .card-category {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #888;
-    text-transform: uppercase;
-    margin: 0 0 0.5rem 0;
-  }
-
-  // Ajustamos los títulos y precios para que usen las nuevas clases
   .card-title {
     font-size: 1.2rem;
-    color: #333;
+    color: $text-color-dark;
     margin: 0;
   }
 
   .card-price {
     font-size: 1.25rem;
     font-weight: bold;
-    color: #2a7a7b;
+    color: $primary-color; // Usando tu color de marca
     margin: 0.5rem 0 1rem 0;
-    flex-grow: 1; // Ocupa el espacio sobrante, empujando el botón al final
+    flex-grow: 1;
   }
 
-  // Estilo para el nuevo botón de detalles
   .details-btn {
-    display: inline-block;
+    display: block;
     text-align: center;
     padding: 0.6rem;
-    background-color: #fff;
-    color: #2a7a7b;
-    border: 1px solid #2a7a7b;
+    background-color: $text-color-light;
+    color: $primary-color; // Usando tu color de marca
+    border: 1px solid $primary-color;
     border-radius: 5px;
-    text-decoration: none; // Quitar subrayado del Link
+    text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
+    margin-top: 0.5rem;
 
     &:hover {
-      background-color: #2a7a7b;
-      color: #fff;
-      text-decoration: none;
+      background-color: $primary-color;
+      color: $text-color-light;
     }
-  // En App.scss, dentro de la regla .product-card
   }
+}
+
+// ==========================================================================
+// 4. ESTILOS PARA LA PÁGINA DE DETALLES (ProductDetailPage.jsx)
+// ==========================================================================
+.product-detail-container {
+  background-color: $text-color-light;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.product-detail-image {
+  flex: 1 1 340px;
+  max-width: 400px;
+
+  img {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+}
+
+.product-detail-info {
+  flex: 2 1 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-category {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $secondary-color;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.detail-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: $text-color-dark;
+  margin: 0 0 1rem 0;
+}
+
+.detail-description {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.detail-stock {
+  font-size: 1rem;
+  color: $text-color-dark;
+  font-weight: 500;
+  margin-bottom: 1rem;
+
+  span {
+    color: $primary-color; // Usando tu color de marca
+    font-weight: 700;
+  }
+}
+
+.detail-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $primary-color; // Usando tu color de marca
+  margin-bottom: 1.5rem;
+}
+
+.add-to-cart-detail-btn {
+  padding: 0.8rem 2rem;
+  background: $primary-color; // Usando tu color de marca
+  color: $text-color-light;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  align-self: flex-start; // Para que no ocupe todo el ancho
+
+  &:hover {
+    background: darken($primary-color, 10%);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+}
+
+// Media Query para hacer la página de detalles responsiva
+@media (max-width: 768px) {
+  .product-detail-container {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+}
+
+// En App.scss, al final del archivo
+
+// ==========================================================================
+// 5. ESTILOS PARA LA PÁGINA DEL CARRITO (CartPage.jsx)
+// ==========================================================================
+
+.cart-item {
+  background-color: #fff;
+  padding: 1rem;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  gap: 1rem;
+}
+
+.cart-item-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-item-details {
+  h5 {
+    margin-bottom: 0.5rem;
+  }
+  p {
+    margin-bottom: 0.25rem;
+  }
+}
+
+.cart-summary {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid $border-color;
 }
