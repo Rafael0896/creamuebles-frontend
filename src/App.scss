@@ -3,12 +3,12 @@
 // =================================================================
 // 1. VARIABLES Y CONFIGURACIÓN GLOBAL
 // =================================================================
-$primary-color: #8abffc;      // Morado distintivo para la marca
-$secondary-color: #6c757d;    // Gris para texto secundario
+$primary-color: #282829;      // Morado distintivo para la marca
+$secondary-color: #a8abae;    // Gris para texto secundario
 $background-color: #f8f9fa;   // Fondo general claro
 $header-bg: #215255;          // Fondo oscuro para el header
 $font-family-base: 'Helvetica Neue', sans-serif;
-$text-color-dark: #333;
+$text-color-dark: #000000;
 $text-color-light: #fff;
 $border-color: #eee;
 
@@ -48,13 +48,24 @@ body {
   border-top: 3px solid $primary-color;
 }
 
+// --- Dropdown on Hover (para el Header) ---
+// Se aplica solo en pantallas grandes (desktop) para no afectar el comportamiento de clic en móviles.
+@media (min-width: 992px) { // Este es el breakpoint 'lg' de Bootstrap para dispositivos grandes
+  .header-navbar .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; // Evita un pequeño espacio que podría cerrar el menú al mover el cursor.
+  }
+}
+
+
 // ==========================================================================
 // 3. ESTILOS PARA LA PÁGINA DE PRODUCTOS (ProductsPage.jsx)
 // ==========================================================================
 .products-container {
-  max-width: 1200px;
+  max-width: px;
+  max-height: 0%;
   margin: 2rem auto;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
 
   h1 {
     text-align: center;
@@ -88,9 +99,10 @@ body {
   }
 
   img, .card-img-top {
-    width: 100%;
-    height: 220px;
+    width: 75%;
+    height: 230px;
     object-fit: cover;
+    margin: 0 auto;
     aspect-ratio: 4 / 3;
   }
 
@@ -102,13 +114,13 @@ body {
   }
 
   .card-title {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: $text-color-dark;
     margin: 0;
   }
 
   .card-price {
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: bold;
     color: $primary-color; // Usando tu color de marca
     margin: 0.5rem 0 1rem 0;
@@ -153,7 +165,7 @@ body {
 
 .product-detail-image {
   flex: 1 1 340px;
-  max-width: 400px;
+  max-width: 250px;
 
   img {
     width: 100%;
@@ -177,14 +189,14 @@ body {
 }
 
 .detail-title {
-  font-size: 2rem;
+  font-size: 1rem;
   font-weight: 700;
   color: $text-color-dark;
   margin: 0 0 1rem 0;
 }
 
 .detail-description {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #444;
   margin-bottom: 1rem;
 }
@@ -202,7 +214,7 @@ body {
 }
 
 .detail-price {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
   color: $primary-color; // Usando tu color de marca
   margin-bottom: 1.5rem;
@@ -222,7 +234,7 @@ body {
 
   &:hover {
     background: darken($primary-color, 10%);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(254, 255, 255, 0.15);
   }
 }
 

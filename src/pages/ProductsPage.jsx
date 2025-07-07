@@ -58,7 +58,6 @@ const ProductsPage = () => {
                                 
                                 <h2 className="card-title">{product.name}</h2>
                                  <p className="card-price">{formatColombianPrice(product.price)}</p>
-                                <p className="card-description">{product.description}</p>
 
                                 {/* 3. Añadimos el Link para ver los detalles */}
                                 <Link to={`/product/${product.id}`} className="details-btn">

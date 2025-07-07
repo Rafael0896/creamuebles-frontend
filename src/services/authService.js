@@ -2,6 +2,23 @@
 import apiClient from './apiClient';
 
 /**
+ * Registra un nuevo usuario.
+ * Asume que el endpoint es POST /api/auth/register en tu backend.
+ * @param {object} userData - Los datos del usuario { firstname, lastname, email, password }.
+ */
+export const registerUser = async (userData) => {
+    try {
+        // La URL base ya está en apiClient, solo añadimos la ruta específica.
+        const response = await apiClient.post('/auth/register', userData);
+        return response.data;
+    } catch (error) {
+        console.error("Error al registrar el usuario:", error.response?.data || error.message);
+        // Lanzamos el error de nuevo para que el componente que llama (RegisterPage) pueda manejarlo.
+        throw error;
+    }
+};
+
+/**
  * Envía las credenciales al backend para iniciar sesión.
  */
 export const login = async (email, password) => { // Cambiamos el nombre del parámetro para más claridad

@@ -67,8 +67,21 @@ const Header = () => {
                                     )}
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/login">Inicia Sesión</NavLink>
+                            {/* Menú desplegable para la cuenta de usuario */}
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownAccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Iniciar Sesión
+                                </a>
+                                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAccount">
+                                    {/* Más adelante, aquí puedes mostrar "Mi Cuenta" si el usuario está logueado */}
+                                    <li>
+                                        <Link className="dropdown-item" to="/login">Iniciar Sesión</Link>
+                                    </li>
+                                    <li>
+                                        <Link className="dropdown-item" to="/register">Registrarse</Link>
+                                    </li>
+                                    <li><Link className="dropdown-item" to="/account">Mi Cuenta</Link></li> {/* Aquí podrías agregar más opciones como "Cerrar Sesión" si el usuario está logueado */}
+                                </ul>
                             </li>
                         </ul>
                     </div>
