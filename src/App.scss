@@ -1,4 +1,5 @@
 // src/App.scss
+@import 'components/BannerCarousel.scss';
 
 // =================================================================
 // 1. VARIABLES Y CONFIGURACIÓN GLOBAL
@@ -62,8 +63,7 @@ body {
 // 3. ESTILOS PARA LA PÁGINA DE PRODUCTOS (ProductsPage.jsx)
 // ==========================================================================
 .products-container {
-  max-width: px;
-  max-height: 0%;
+  max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1rem;
 
@@ -73,6 +73,7 @@ body {
     font-size: 2.5rem;
     font-weight: 300;
     color: $text-color-dark;
+    text-decoration: none; // Asegura que no esté subrayado
   }
 }
 
@@ -82,7 +83,6 @@ body {
   gap: 2rem;
 }
 
-// --- Product Card (Versión Unificada y Corregida) ---
 .product-card {
   background-color: $text-color-light;
   border: 1px solid $border-color;
@@ -122,7 +122,7 @@ body {
   .card-price {
     font-size: 1rem;
     font-weight: bold;
-    color: $primary-color; // Usando tu color de marca
+    color: $primary-color;
     margin: 0.5rem 0 1rem 0;
     flex-grow: 1;
   }
@@ -132,7 +132,7 @@ body {
     text-align: center;
     padding: 0.6rem;
     background-color: $text-color-light;
-    color: $primary-color; // Usando tu color de marca
+    color: $primary-color;
     border: 1px solid $primary-color;
     border-radius: 5px;
     text-decoration: none;
@@ -282,3 +282,7 @@ body {
   border-radius: 8px;
   border: 1px solid $border-color;
 }
+
+// ==========================================================================
+// 5. ESTILOS PARA BANNERS (banner.jsx)
+// ==========================================================================

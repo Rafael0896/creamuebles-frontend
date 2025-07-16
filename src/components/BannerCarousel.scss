@@ -1,0 +1,133 @@
+// src/components/BannerCarousel.scss
+
+// --- Variables para que puedas personalizarlo fácilmente ---
+$banner-height: 450px;
+$banner-border-radius: 12px;
+$overlay-color: rgba(99, 99, 99, 0.5); // Superposición oscura para que el texto se lea bien
+$text-color: #ffffff;
+$primary-accent-color: #007bff; // Un color de acento, usado para los puntos activos
+
+// --- Contenedor principal que envuelve todo el carrusel ---
+.banner-carousel-wrapper {
+  margin: 2rem 0;
+  position: relative; // Necesario para que las flechas y puntos se posicionen correctamente
+
+  // --- Estilos para cada una de las diapositivas ---
+  .banner-slide-container {
+    position: relative;
+    height: $banner-height;
+    overflow: hidden; // Esconde lo que se salga de los bordes redondeados (como el zoom de la imagen)
+    color: $text-color;
+
+    // Estilos para el enlace que envuelve todo el slide
+    a {
+      color: inherit; // El texto del enlace no será azul, sino blanco
+      text-decoration: none; // Quitamos el subrayado
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    // --- Capas internas del slide ---
+
+    // 1. La imagen de fondo
+    .banner-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.4s ease-out; // Animación suave para el efecto de zoom
+    }
+
+    // 2. La capa de superposición oscura
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $overlay-color;
+      z-index: 1; // Se pone por encima del fondo
+    }
+
+    // 3. El contenido (título y subtítulo)
+    .banner-content {
+      position: relative;
+      z-index: 2; // Se pone por encima de la capa de superposición
+      text-align: center;
+      padding: 2rem;
+      max-width: 800px;
+      // Centramos el contenido vertical y horizontalmente usando flexbox en el contenedor
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      margin: 0 auto; // Ayuda a centrar en caso de anchos fijos
+
+      h1 {
+        font-size: 2.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // Sombra para que se lea mejor sobre cualquier imagen
+      }
+
+      p {
+        font-size: 1.2rem;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    // --- Efectos interactivos ---
+    &:hover .banner-background {
+      transform: scale(1.05); // Efecto de zoom en la imagen al pasar el mouse
+    }
+  }
+
+  // --- Estilos para el esqueleto de carga (Placeholder) ---
+  .carousel-placeholder {
+    background-color: #e9ecef; // Un gris claro para el fondo
+    height: $banner-height;
+    // Si usas bordes redondeados en el slide, también aplícalos aquí
+    // border-radius: $banner-border-radius;
+
+    // Usamos las clases de placeholder de Bootstrap que ya tienes en el JSX
+    .placeholder-glow .placeholder {
+      background-color: #dee2e6; // Un gris un poco más oscuro
+    }
+  }
+
+  // --- Personalización de los controles de SWIPER ---
+  // Estos estilos reemplazan los de .slick-dots y .slick-arrow
+
+  // Estilos para los puntos de paginación
+  .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background-color: $text-color;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+  }
+
+  // Estilo para el punto activo
+  .swiper-pagination-bullet-active {
+    background-color: $primary-accent-color;
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  // Estilos para las flechas de navegación
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: $text-color; // Cambia el color del icono SVG de la flecha
+    transition: transform 0.2s ease;
+
+    // Efecto sutil al pasar el ratón
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
