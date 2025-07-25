@@ -1,33 +1,28 @@
 // src/pages/LoginPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../services/authService'; // 1. Importamos la función de login
+import { login } from '../services/authService';
 
 const LoginPage = () => {
-    // 2. Estados para guardar lo que el usuario escribe en los campos
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(null); // Estado para mostrar mensajes de error
-
-    // 3. Hook para redirigir al usuario después de un login exitoso
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    // 4. Esta es la función CLAVE que se ejecuta al presionar "Entrar"
+    // NUEVO: URL del backend que inicia el flujo de autenticación con Google.
+    // Esta es la dirección a la que el botón/enlace debe apuntar.
+    const GOOGLE_AUTH_URL = 'http://localhost:8080/oauth2/authorization/google';
+
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Previene que la página se recargue
-        setError(null); // Limpiamos cualquier error anterior
+        e.preventDefault();
+        setError(null);
 
         try {
-            // 5. Llamamos a la función 'login' del servicio con los datos del formulario
-            console.log('Intentando iniciar sesión con:', email); // Para depuración
+            console.log('Intentando iniciar sesión con:', email);
             await login(email, password);
-
-            // 6. Si la línea anterior no da error, el login fue exitoso
             console.log('¡Login exitoso!');
-            navigate('/'); // Redirigimos al usuario a la página de inicio
-
+            navigate('/');
         } catch (err) {
-            // 7. Si 'login' lanza un error (ej. 401, 404), lo capturamos aquí
             console.error('Error en el login:', err);
             setError('Credenciales incorrectas. Por favor, inténtelo de nuevo.');
         }
@@ -38,7 +33,6 @@ const LoginPage = () => {
             <div className="card p-4" style={{ width: '100%', maxWidth: '400px' }}>
                 <h2 className="text-center mb-4">Iniciar Sesión</h2>
                 
-                {/* 8. Conectamos la función handleSubmit al evento onSubmit del formulario */}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email</label>
@@ -47,7 +41,7 @@ const LoginPage = () => {
                             className="form-control"
                             id="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)} // Actualiza el estado 'email'
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>
@@ -58,18 +52,35 @@ const LoginPage = () => {
                             className="form-control"
                             id="password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)} // Actualiza el estado 'password'
+                            onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
-
-                    {/* 9. Mostramos el mensaje de error si existe */}
+                    
                     {error && <div className="alert alert-danger">{error}</div>}
                     
                     <button type="submit" className="btn btn-primary w-100">
                         Entrar
                     </button>
                 </form>
+
+                {/* NUEVO: Separador visual para el login social */}
+                <div className="d-flex align-items-center my-3">
+                    <hr className="flex-grow-1" />
+                    <span className="px-2 text-muted small">O</span>
+                    <hr className="flex-grow-1" />
+                </div>
+
+                {/* NUEVO: Botón de inicio de sesión con Google */}
+                {/* Es un enlace <a> que redirige el navegador, no un botón de formulario. */}
+                <a href={GOOGLE_AUTH_URL} className="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center">
+                    {/* Icono de Google (SVG) para no depender de archivos externos */}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" className="bi bi-google" viewBox="0 0 16 16">
+                        <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.25C2.806 7.655 2.5 8.5 2.5 9.5c0 1 .306 1.845.808 2.584C3.96 13.592 5.713 15 8 15c1.453 0 2.746-.52 3.72-1.397l.002.002 2.284-2.284c.596.596 1.389.996 2.284 1.286V9.5h-2.086z"/>
+                    </svg>
+                    <span className="ms-2">Iniciar sesión con Google</span>
+                </a>
+
             </div>
         </div>
     );
