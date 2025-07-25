@@ -3,7 +3,7 @@
 // --- Variables para que puedas personalizarlo fácilmente ---
 $banner-height: 450px;
 $banner-border-radius: 12px;
-$overlay-color: rgba(99, 99, 99, 0.5); // Superposición oscura para que el texto se lea bien
+$overlay-color: rgba(155, 155, 155, 0.046); // Superposición oscura para que el texto se lea bien
 $text-color: #ffffff;
 $primary-accent-color: #007bff; // Un color de acento, usado para los puntos activos
 
@@ -81,10 +81,6 @@ $primary-accent-color: #007bff; // Un color de acento, usado para los puntos act
       }
     }
 
-    // --- Efectos interactivos ---
-    &:hover .banner-background {
-      transform: scale(1.05); // Efecto de zoom en la imagen al pasar el mouse
-    }
   }
 
   // --- Estilos para el esqueleto de carga (Placeholder) ---
