@@ -1,6 +1,6 @@
 // src/pages/RegisterPage.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../services/authService';
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -121,6 +121,12 @@ const RegisterPage = () => {
                     <button type="submit" className="btn btn-primary w-100" disabled={!captchaToken}>
                         Registrarse
                     </button>
+
+                    {/* 2. AÑADIR ESTE BLOQUE DE CÓDIGO */}
+                    <div className="text-center mt-3">
+                        <span className="text-muted">¿Ya tienes cuenta? </span>
+                        <Link to="/login">Iniciar sesión</Link>
+                    </div>
                 </form>
             </div>
         </div>
