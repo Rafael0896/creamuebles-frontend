@@ -80,7 +80,7 @@ body {
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .product-card {
@@ -99,10 +99,10 @@ body {
   }
 
   img, .card-img-top {
-    width: 75%;
-    height: 230px;
+    width: 100%;
+    height: 280px;
     object-fit: cover;
-    margin: 0 auto;
+    margin:  auto;
     aspect-ratio: 4 / 3;
   }
 
@@ -130,11 +130,11 @@ body {
   .details-btn {
     display: block;
     text-align: center;
-    padding: 0.6rem;
+    padding: 0.4rem;
     background-color: $text-color-light;
     color: $primary-color;
-    border: 1px solid $primary-color;
-    border-radius: 5px;
+    border: 0.5px solid $primary-color;
+    border-radius: 10px;
     text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
     margin-top: 0.5rem;
@@ -286,3 +286,86 @@ body {
 // ==========================================================================
 // 5. ESTILOS PARA BANNERS (banner.jsx)
 // ==========================================================================
+
+/* Estilo general del campo de texto (input) */
+.header-navbar .form-control {
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
+    color: #ffffff; /* Color del texto que escribe el usuario */
+    transition: all 0.3s ease-in-out; /* Transición suave para focus */
+}
+
+/* Estilo del texto del placeholder ("Buscar productos...") */
+.header-navbar .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6); /* Color del placeholder, menos opaco */
+}
+
+/* Para compatibilidad con otros navegadores */
+.header-navbar .form-control::-ms-input-placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Estilo del campo de texto CUANDO está seleccionado (focus) */
+.header-navbar .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.2); /* Fondo un poco más claro */
+    border-color: #ffffff; /* Borde blanco para resaltar */
+    color: #ffffff;
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25); /* Sombra de Bootstrap, pero en blanco */
+}
+
+/* Estilo del botón de búsqueda */
+.header-navbar .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.2); /* Mismo color de borde que el input */
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Estilo del botón al pasar el mouse por encima (hover) */
+.header-navbar .btn-outline-light:hover {
+    border-color: #ffffff;
+    background-color: #ffffff;
+    color: #0d1b2a; /* Un color oscuro para el ícono, que contraste con el fondo blanco */
+}
+
+/* 1. Wrapper que controla el tamaño y centrado */
+.search-wrapper {
+    width: 50%; /* Ocupa el 50% del espacio disponible en el header */
+    max-width: 500px; /* Un ancho máximo para que no sea gigante en pantallas muy grandes */
+    transition: width 0.3s ease-in-out; /* Transición suave para la responsividad */
+}
+
+/* 2. El input con espacio a la derecha para el icono */
+.search-input {
+    /* Hereda los estilos de .form-control que ya definimos (fondo, color, borde) */
+    padding-right: 2.8rem !important; /* MUY IMPORTANTE: Crea el espacio para el icono */
+    height: 42px; /* Altura consistente */
+}
+
+/* 3. Posicionamiento y estilo del icono DENTRO de la barra */
+.search-icon {
+    position: absolute;
+    top: 50%;
+    right: 1rem; /* Distancia desde el borde derecho */
+    transform: translateY(-50%); /* Centrado vertical perfecto */
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+    transition: color 0.2s ease;
+}
+
+.search-icon:hover {
+    color: #ffffff; /* El icono se ilumina al pasar el mouse */
+}
+
+/* 4. RESPONSIVIDAD: Estilos para pantallas pequeñas (móviles) */
+@media (max-width: 991.98px) {
+    /* Cuando la barra de navegación de Bootstrap se colapsa */
+    .search-wrapper {
+        width: 100%; /* La barra de búsqueda ocupa todo el ancho */
+        order: -1; /* La movemos para que aparezca PRIMERO en el menú desplegable */
+        margin-bottom: 1rem; /* Espacio entre la búsqueda y los otros links del menú */
+    }
+
+    /* Aseguramos que el menú de la derecha se alinee correctamente */
+    .header-navbar .navbar-nav {
+        margin-left: 0 !important;
+    }
+}

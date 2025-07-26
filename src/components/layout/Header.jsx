@@ -1,22 +1,27 @@
 // src/components/layout/Header.jsx
 import React, { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+// 1. IMPORTAMOS useNavigate PARA LA BÚSQUEDA y useLocation para limpiar la búsqueda
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { getAllCategories } from '../../services/categoryService';
-import { FaShoppingCart } from 'react-icons/fa';
-// 1. IMPORTAMOS EL HOOK PARA USAR EL CONTEXTO DEL CARRITO
+import { FaShoppingCart, FaSearch } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
+// 2. IMPORTAMOS EL FUTURO HOOK DE AUTENTICACIÓN
+// import { useAuth } from '../../context/AuthContext'; // Descomentar cuando crees el AuthContext
 
 const Header = () => {
     const [categories, setCategories] = useState([]);
-    
-    // 2. OBTENEMOS LOS ITEMS DEL CARRITO DESDE EL CONTEXTO GLOBAL
+    // 3. AÑADIMOS UN ESTADO PARA LA BARRA DE BÚSQUEDA
+    const [searchQuery, setSearchQuery] = useState('');
+
+    // Hooks y lógica existente
     const { cartItems } = useCart();
-
-    // 3. CALCULAMOS EL NÚMERO TOTAL DE PRODUCTOS EN EL CARRITO
-    //    Sumamos las cantidades de cada item para tener el total real.
     const totalItemsInCart = cartItems.reduce((total, item) => total + item.quantity, 0);
+    
+    // 4. INICIALIZAMOS useNavigate PARA REDIRIGIR AL USUARIO
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    // Tu lógica para cargar categorías se mantiene intacta
+    // Lógica para cargar categorías (sin cambios)
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -26,25 +31,72 @@ const Header = () => {
                 console.error("Error al cargar las categorías:", error);
             }
         };
-
         fetchCategories();
     }, []);
+
+    // Efecto para limpiar la búsqueda si cambiamos de página
+    useEffect(() => {
+        setSearchQuery('');
+    }, [location]);
+
+
+    // 5. FUNCIÓN PARA MANEJAR EL ENVÍO DEL FORMULARIO DE BÚSQUEDA
+    const handleSearchSubmit = (e) => {
+        e.preventDefault(); // Evita que la página se recargue
+        if (searchQuery.trim()) {
+            // Redirigimos a una página de resultados de búsqueda
+            navigate(`/search?q=${searchQuery.trim()}`);
+        }
+    };
+
+    // 6. SIMULACIÓN DE DATOS DE AUTENTICACIÓN (REEMPLAZAR CON EL CONTEXTO REAL)
+    // Cuando tengas tu AuthContext, reemplazarás esto con:
+    // const { isAuthenticated, user, logout } = useAuth();
+    const isAuthenticated = false; // Cambia a `true` para ver el saludo
+    const user = { name: 'Ana' }; // Datos de ejemplo
+    const logout = () => console.log("Cerrando sesión..."); // Función de ejemplo
 
     return (
         <header>
             <nav className="navbar navbar-expand-lg navbar-dark header-navbar">
                 <div className="container">
-                    <Link className="navbar-brand header-brand" to="/">CreaMuebles</Link>
+                    <Link className="navbar-brand header-brand" to="/">CreaMuebles MR</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                        {/* --- INICIO: NUEVA BARRA DE BÚSQUEDA CENTRADA --- */}
+                    <div className="search-wrapper mx-auto"> {/* 1. Wrapper para centrar y controlar el tamaño */}
+                        <form className="position-relative" onSubmit={handleSearchSubmit}> {/* 2. El form es ahora el contenedor relativo */}
+                            <input
+                                className="form-control search-input" // 3. Clase custom para el input
+                                type="search"
+                                placeholder="Encuentra tu mueble ideal..."
+                                aria-label="Buscar productos"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <FaSearch
+                                className="search-icon" // 4. Clase custom para el icono
+                                onClick={handleSearchSubmit} // Hacemos el icono clickeable para enviar la búsqueda
+                            />
+                        </form>
+                    </div>
+                    {/* --- FIN: NUEVA BARRA DE BÚSQUEDA CENTRADA --- */}
+
+                        <ul className="navbar-nav mb-2 mb-lg-0 align-items-center">
                             <li className="nav-item dropdown">
                                 {/* ... tu código del dropdown de categorías no cambia ... */}
-                                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button
+                                    className="nav-link dropdown-toggle btn btn-link"
+                                    type="button"
+                                    id="navbarDropdownCategories"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                    style={{ textDecoration: 'none' }}
+                                >
                                     Categorías
-                                </a>
+                                </button>
                                 <ul className="dropdown-menu">
                                     {categories.map(category => (
                                         <li key={category.id}>
@@ -56,9 +108,9 @@ const Header = () => {
                                 </ul>
                             </li>
                             <li className="nav-item">
+                                {/* ... tu código del carrito no cambia ... */}
                                 <NavLink className="nav-link position-relative" to="/cart" aria-label="Ver carrito de compras">
                                     <FaShoppingCart size="1.3em" />
-                                    {/* 4. USAMOS LA NUEVA VARIABLE DINÁMICA */}
                                     {totalItemsInCart > 0 && (
                                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                             {totalItemsInCart}
@@ -67,22 +119,54 @@ const Header = () => {
                                     )}
                                 </NavLink>
                             </li>
-                            {/* Menú desplegable para la cuenta de usuario */}
+                            
+                            {/* --- INICIO: LÓGICA DE AUTENTICACIÓN --- */}
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownAccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Iniciar Sesión
-                                </a>
-                                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAccount">
-                                    {/* Más adelante, aquí puedes mostrar "Mi Cuenta" si el usuario está logueado */}
-                                    <li>
-                                        <Link className="dropdown-item" to="/login">Iniciar Sesión</Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/register">Registrarse</Link>
-                                    </li>
-                                    <li><Link className="dropdown-item" to="/account">Mi Cuenta</Link></li> {/* Aquí podrías agregar más opciones como "Cerrar Sesión" si el usuario está logueado */}
-                                </ul>
+                                {isAuthenticated ? (
+                                    // Vista para usuario AUTENTICADO
+                                    <>
+                                        <button
+                                            className="nav-link dropdown-toggle btn btn-link"
+                                            id="navbarDropdownAccount"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                            style={{ textDecoration: 'none' }}
+                                        >
+                                            Hola, {user.name}
+                                        </button>
+                                        <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAccount">
+                                            <li><Link className="dropdown-item" to="/account">Mi Cuenta</Link></li>
+                                            <li><hr className="dropdown-divider" /></li>
+                                            <li>
+                                                <button className="dropdown-item" onClick={logout}>
+                                                    Cerrar Sesión
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </>
+                                ) : (
+                                    // Vista para usuario NO AUTENTICADO (tu código original)
+                                    <>
+                                        <button
+                                            className="nav-link dropdown-toggle btn btn-link"
+                                            id="navbarDropdownAccount"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                            style={{ textDecoration: 'none' }}
+                                        >
+                                            Iniciar Sesión
+                                        </button>
+                                        <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAccount">
+                                            <li><Link className="dropdown-item" to="/login">Iniciar Sesión</Link></li>
+                                            <li><Link className="dropdown-item" to="/register">Registrarse</Link></li>
+                                            <li><Link className="dropdown-item" to="/account">Mi Cuenta</Link></li>
+                                        </ul>
+                                    </>
+                                )}
                             </li>
+                            {/* --- FIN: LÓGICA DE AUTENTICACIÓN --- */}
                         </ul>
                     </div>
                 </div>
