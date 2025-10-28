@@ -111,7 +111,7 @@ $primary-accent-color: #007bff; // Un color de acento, usado para los puntos act
   // Estilo para el punto activo
   .swiper-pagination-bullet-active {
     background-color: $primary-accent-color;
-    transform: scale(1.2);
+    transform: scale(1.2); // Aumenta un poco el tamaño del punto activo
     opacity: 1;
   }
 

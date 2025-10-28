@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../creamuebles-frontend.iml" filepath="$PROJECT_DIR$/../creamuebles-frontend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/creamuebles-frontend.iml" filepath="$PROJECT_DIR$/.idea/creamuebles-frontend.iml" />
     </modules>
   </component>
 </project>

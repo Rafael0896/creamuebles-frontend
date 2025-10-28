@@ -1,8 +1,9 @@
-// 1. Importa 'Link' junto a los otros hooks de react-router-dom
+// src/pages/LoginPage.jsx
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { login } from '../services/authService';
+import { login as loginService } from '../services/authService';
 import ReCAPTCHA from "react-google-recaptcha";
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ const LoginPage = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
+    const { login } = useAuth(); // ✅ función para actualizar el contexto global
     const GOOGLE_AUTH_URL = 'http://localhost:8080/oauth2/authorization/google';
 
     const handleSubmit = async (e) => {
@@ -23,12 +25,18 @@ const LoginPage = () => {
         }
 
         try {
-            await login(email, password, recaptchaToken);
+            // Llama a tu servicio de autenticación (que hace la petición al backend)
+            const userData = await loginService(email, password, recaptchaToken);
+
+            // ✅ Guarda el usuario en el contexto global (esto actualiza el Header)
+            login(userData);
+
             console.log('¡Login exitoso!');
-            navigate('/');
+            navigate('/'); // Redirige al inicio o dashboard
         } catch (err) {
             console.error('Error en el login:', err);
             setError(err.message || 'Credenciales o reCAPTCHA incorrectos.');
+
             if (window.grecaptcha) {
                 window.grecaptcha.reset();
                 setRecaptchaToken(null);
@@ -42,7 +50,6 @@ const LoginPage = () => {
                 <h2 className="text-center mb-4">Iniciar Sesión</h2>
                 
                 <form onSubmit={handleSubmit}>
-                    {/* ... tus inputs de email y password ... */}
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email</label>
                         <input
@@ -87,20 +94,16 @@ const LoginPage = () => {
                 </div>
 
                 <a href={GOOGLE_AUTH_URL} className="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center">
-                    {/* ... tu SVG de Google ... */}
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" className="bi bi-google" viewBox="0 0 16 16">
                         <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.25C2.806 7.655 2.5 8.5 2.5 9.5c0 1 .306 1.845.808 2.584C3.96 13.592 5.713 15 8 15c1.453 0 2.746-.52 3.72-1.397l.002.002 2.284-2.284c.596.596 1.389.996 2.284 1.286V9.5h-2.086z"/>
                     </svg>
                     <span className="ms-2">Iniciar sesión con Google</span>
                 </a>
 
-                {/* 2. AÑADIR ESTE BLOQUE DE CÓDIGO */}
                 <div className="text-center mt-3">
                     <span className="text-muted">¿Aún no tienes cuenta? </span>
                     <Link to="/register">Regístrate</Link>
                 </div>
-                {/* FIN DEL BLOQUE AÑADIDO */}
-
             </div>
         </div>
     );

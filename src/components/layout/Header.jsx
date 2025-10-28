@@ -5,6 +5,8 @@ import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { getAllCategories } from '../../services/categoryService';
 import { FaShoppingCart, FaSearch } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
+
 // 2. IMPORTAMOS EL FUTURO HOOK DE AUTENTICACIÓN
 // import { useAuth } from '../../context/AuthContext'; // Descomentar cuando crees el AuthContext
 
@@ -49,12 +51,8 @@ const Header = () => {
         }
     };
 
-    // 6. SIMULACIÓN DE DATOS DE AUTENTICACIÓN (REEMPLAZAR CON EL CONTEXTO REAL)
-    // Cuando tengas tu AuthContext, reemplazarás esto con:
-    // const { isAuthenticated, user, logout } = useAuth();
-    const isAuthenticated = false; // Cambia a `true` para ver el saludo
-    const user = { name: 'Ana' }; // Datos de ejemplo
-    const logout = () => console.log("Cerrando sesión..."); // Función de ejemplo
+    // 6. DATOS DE AUTENTICACIÓN DESDE EL CONTEXTO REAL
+    const { isAuthenticated, user, logout } = useAuth();
 
     return (
         <header>
@@ -107,18 +105,6 @@ const Header = () => {
                                     ))}
                                 </ul>
                             </li>
-                            <li className="nav-item">
-                                {/* ... tu código del carrito no cambia ... */}
-                                <NavLink className="nav-link position-relative" to="/cart" aria-label="Ver carrito de compras">
-                                    <FaShoppingCart size="1.3em" />
-                                    {totalItemsInCart > 0 && (
-                                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                            {totalItemsInCart}
-                                            <span className="visually-hidden">productos en el carrito</span>
-                                        </span>
-                                    )}
-                                </NavLink>
-                            </li>
                             
                             {/* --- INICIO: LÓGICA DE AUTENTICACIÓN --- */}
                             <li className="nav-item dropdown">
@@ -133,7 +119,7 @@ const Header = () => {
                                             aria-expanded="false"
                                             style={{ textDecoration: 'none' }}
                                         >
-                                            Hola, {user.name}
+                                            <span>Hola, {user.fullName || user.firstName || 'Usuario'}</span>
                                         </button>
                                         <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAccount">
                                             <li><Link className="dropdown-item" to="/account">Mi Cuenta</Link></li>
@@ -167,6 +153,20 @@ const Header = () => {
                                 )}
                             </li>
                             {/* --- FIN: LÓGICA DE AUTENTICACIÓN --- */}
+
+                            <li className="nav-item">
+                                {/* ... tu código del carrito no cambia ... */}
+                                <NavLink className="nav-link position-relative" to="/cart" aria-label="Ver carrito de compras">
+                                    <FaShoppingCart size="1.3em" />
+                                    {totalItemsInCart > 0 && (
+                                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            {totalItemsInCart}
+                                            <span className="visually-hidden">productos en el carrito</span>
+                                        </span>
+                                    )}
+                                </NavLink>
+                            </li>
+                            
                         </ul>
                     </div>
                 </div>

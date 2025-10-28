@@ -7,7 +7,7 @@
 $primary-color: #282829;      // Morado distintivo para la marca
 $secondary-color: #a8abae;    // Gris para texto secundario
 $background-color: #f8f9fa;   // Fondo general claro
-$header-bg: #215255;          // Fondo oscuro para el header
+$header-bg: #0284c5a5;          // Fondo oscuro para el header
 $font-family-base: 'Helvetica Neue', sans-serif;
 $text-color-dark: #000000;
 $text-color-light: #fff;
@@ -28,7 +28,7 @@ body {
 
 .header-navbar {
   background-color: $header-bg;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .header-brand {
@@ -47,6 +47,17 @@ body {
   margin-top: auto;
   text-align: center;
   border-top: 3px solid $primary-color;
+}
+
+.header-navbar .nav-link {
+  color: $text-color-light;
+  font-weight: 400;
+  transition: color 0.2s ease-in-out;
+  padding: 0.5rem 1rem;
+
+  &:hover {
+    color: $primary-color;
+  }
 }
 
 // --- Dropdown on Hover (para el Header) ---
@@ -93,16 +104,35 @@ body {
   display: flex;
   flex-direction: column;
 
+  /* 🔧 Corrige el estilo de enlaces dentro de la tarjeta */
+  a {
+    color: inherit !important;           /* Usa el color del texto padre */
+    text-decoration: none !important;    /* Quita el subrayado azul */
+  }
+
+  a:hover {
+    color: #4ebd17;                      /* Color al pasar el mouse (opcional) */
+    text-decoration: underline;          /* Subrayado solo al hover */
+  }
+
+  a:focus,
+  a:focus-visible {
+    outline: none;                       /* Elimina borde azul */
+    box-shadow: none;                    /* Evita brillos */
+    background: none;                    /* Sin fondo azul */
+  }
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
 
-  img, .card-img-top {
+  img,
+  .card-img-top {
     width: 100%;
     height: 280px;
     object-fit: cover;
-    margin:  auto;
+    margin: auto;
     aspect-ratio: 4 / 3;
   }
 
@@ -143,8 +173,16 @@ body {
       background-color: $primary-color;
       color: $text-color-light;
     }
+
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      background: none;
+      box-shadow: none;
+    }
   }
 }
+
 
 // ==========================================================================
 // 4. ESTILOS PARA LA PÁGINA DE DETALLES (ProductDetailPage.jsx)

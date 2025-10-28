@@ -3,20 +3,20 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../services/authService';
 import ReCAPTCHA from "react-google-recaptcha";
+import Swal from 'sweetalert2'; // ✅ Importamos SweetAlert2
 
 const RegisterPage = () => {
-    // 1. Actualizamos el estado para incluir todos los campos nuevos
     const [formData, setFormData] = useState({
         email: '',
         firstName: '',
         lastName: '',
-        documentType: 'CC', // Valor por defecto para el select
+        documentType: 'CC',
         documentNumber: '',
         phoneNumber: '',
         password: '',
         confirmPassword: ''
     });
-    
+
     const [captchaToken, setCaptchaToken] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -32,7 +32,6 @@ const RegisterPage = () => {
         e.preventDefault();
         setError(null);
 
-        // 2. Validación de contraseña en el frontend para feedback inmediato
         if (formData.password !== formData.confirmPassword) {
             setError("Las contraseñas no coinciden.");
             return;
@@ -50,10 +49,28 @@ const RegisterPage = () => {
             };
 
             await register(dataToSend);
-            console.log('¡Registro exitoso!');
-            navigate('/');
+
+            // ✅ SweetAlert2: mensaje de éxito visual
+            Swal.fire({
+                icon: 'success',
+                title: '¡Cuenta creada con éxito!',
+                text: 'Tu registro fue exitoso. Serás redirigido al inicio de sesión.',
+                showConfirmButton: false,
+                timer: 2500, // 2.5 segundos
+                timerProgressBar: true,
+            });
+
+            // 🔄 Redirigir al login después del tiempo del alert
+            setTimeout(() => navigate('/login'), 2500);
+
         } catch (err) {
-            setError(err.message);
+            // ⚠️ Mensaje visual de error con SweetAlert2
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al registrar',
+                text: err.message || 'Ocurrió un error al crear tu cuenta. Inténtalo de nuevo.',
+            });
+
             if (window.grecaptcha) {
                 window.grecaptcha.reset();
                 setCaptchaToken(null);
@@ -65,12 +82,13 @@ const RegisterPage = () => {
         <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
             <div className="card p-4" style={{ width: '100%', maxWidth: '500px' }}>
                 <h2 className="text-center mb-4">Crear Cuenta</h2>
-                {/* 3. Reestructuramos el formulario con el nuevo orden y campos */}
+
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <label className="form-label">Correo Electrónico</label>
                         <input type="email" name="email" className="form-control" onChange={handleChange} required />
                     </div>
+
                     <div className="row">
                         <div className="col-md-6 mb-3">
                             <label className="form-label">Nombres</label>
@@ -81,6 +99,7 @@ const RegisterPage = () => {
                             <input type="text" name="lastName" className="form-control" onChange={handleChange} required />
                         </div>
                     </div>
+
                     <div className="row">
                         <div className="col-md-6 mb-3">
                             <label className="form-label">Tipo de Documento</label>
@@ -96,14 +115,17 @@ const RegisterPage = () => {
                             <input type="text" name="documentNumber" className="form-control" onChange={handleChange} required />
                         </div>
                     </div>
+
                     <div className="mb-3">
                         <label className="form-label">Celular</label>
                         <input type="tel" name="phoneNumber" className="form-control" onChange={handleChange} />
                     </div>
+
                     <div className="mb-3">
                         <label className="form-label">Contraseña</label>
                         <input type="password" name="password" className="form-control" onChange={handleChange} required />
                     </div>
+
                     <div className="mb-3">
                         <label className="form-label">Confirmar Contraseña</label>
                         <input type="password" name="confirmPassword" className="form-control" onChange={handleChange} required />
@@ -122,7 +144,6 @@ const RegisterPage = () => {
                         Registrarse
                     </button>
 
-                    {/* 2. AÑADIR ESTE BLOQUE DE CÓDIGO */}
                     <div className="text-center mt-3">
                         <span className="text-muted">¿Ya tienes cuenta? </span>
                         <Link to="/login">Iniciar sesión</Link>
